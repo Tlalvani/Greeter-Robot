@@ -2,7 +2,7 @@
 #define FINGER
 #include <Joint.h>
 #include "Arduino.h"
-
+#include <Timer.h>
 class Finger : public Joint
 {
 private:
@@ -11,8 +11,9 @@ private:
     int sensorValue;
 
     int pos = 0;
-    unsigned long closeTimer = millis();
-    unsigned long openTimer = millis();
+    Timer closeTimer = Timer(0);
+    Timer openTimer = Timer(20);
+
 public:
     Finger()
     {
@@ -33,19 +34,15 @@ public:
 
     void close()
     {
-        int openTime = 20;
-        int closeTime = 0;
-       Serial.println(sensorRead());
+        Serial.println(sensorRead()); // not sure why it hecks it up without these
 
-        if (millis() - closeTimer > closeTime)
+        if (closeTimer.getTimer() > closeTimer.getTime())
         {
             if (pos <= max)
                 pos++;
-            write(pos); 
-            closeTimer = millis();
+            write(pos);
+            closeTimer.resetTimer();
         }
-        
-
 
         if (sensorRead() > thresh)
         {
@@ -54,14 +51,13 @@ public:
                 sensorRead();
                 pos--;
                 Serial.println(sensorRead());
-                if (millis() - openTimer > openTime)
+                if (openTimer.getTimer() > openTimer.getTime())
                 {
                     write(pos);
-                    openTimer = millis();
+                    openTimer.resetTimer();
                 }
             }
         }
-        
     }
 };
 #endif

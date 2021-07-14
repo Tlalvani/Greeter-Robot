@@ -38,6 +38,14 @@ public:
         index.write(pose);
         thumb.write(pose);
     }
+    void goToMin()
+    {
+        pinky.goToMin();
+        ring.goToMin();
+        middle.goToMin();
+        index.goToMin();
+        thumb.goToMin();
+    }
 
     void spinspin(int min, int max)
     {
@@ -65,8 +73,6 @@ public:
         delay(5000);
     }
 
-    
-
     void readSensor()
     {
         Serial.print("Pinky: ");
@@ -80,10 +86,10 @@ public:
         Serial.print("Thumb: ");
         Serial.println(thumb.sensorRead());
         Serial.println("");
-        delay(1000);
     }
 
-    void close(){
+    void close()
+    {
         pinky.close();
         ring.close();
         middle.close();
