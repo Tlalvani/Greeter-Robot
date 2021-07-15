@@ -37,8 +37,8 @@ public:
     {
         wrist.goToMin();
         //hand.goToMin();
-        hand.close();
-        //hand.fixed(50);
+        //hand.close();
+        hand.fixed(0);
         moveArm(.75, .6, 0, .25);
         // bicepExt.write(140);
         // bicepRot.write(110);

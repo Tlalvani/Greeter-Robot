@@ -18,6 +18,7 @@ public:
         this->right = right;
     }
 
+    //Left and Right balance at 50
     void begin()
     {
         front.begin();
@@ -28,8 +29,19 @@ public:
     void goToMin()
     {
         front.goToMin();
-        left.goToMin();
-        right.goToMin();
+        left.write(50);
+        right.write(50);
     }
+
+    void goToMax()
+    {
+        front.goToMax();
+        left.goToMax();
+        right.goToMax();
+    }
+
+    void lean(int pos)
+    {
+        }
 };
 #endif

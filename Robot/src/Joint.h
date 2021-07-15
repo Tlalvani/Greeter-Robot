@@ -21,6 +21,7 @@ public:
         min = 98;
         max = 98;
     }
+
     Joint(int servoPort, int min, int max)
     {
 
@@ -35,6 +36,7 @@ public:
     {
         joint.attach(servoPort);
     }
+
     void write(int pos)
     {
         if (pos < min)
@@ -50,10 +52,12 @@ public:
             joint.write(pos);
         }
     }
+
     void goToMin()
     {
         write(min);
     }
+
     void goToMax()
     {
         write(max);
