@@ -12,12 +12,12 @@ Timer readSensor(1000);
 Subscriber sub;
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   robot.neck.begin();
   //lefthand.begin();
   startTimer.resetTimer();
-
+  sub.init();
   //robot.rightArm.shouldExt.begin();
 }
 
@@ -54,8 +54,9 @@ void loop()
   // }
 
   //lefthand.close();
-  robot.startup(started);
 
+  robot.startup(started);
+  sub.sendCom("Hello World");
   if (startTimer.getTimer() > startTimer.getTime())
   {
 
