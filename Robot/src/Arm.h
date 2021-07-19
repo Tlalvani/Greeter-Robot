@@ -45,6 +45,12 @@ public:
         // shouldExt.write(0);
         // shouldRot.write(45);
     }
+
+    void highFive()
+    {
+        moveArm(1, .5, 0, .7);
+        wrist.write(180);
+    }
     void goToMin()
     {
         hand.goToMin();
