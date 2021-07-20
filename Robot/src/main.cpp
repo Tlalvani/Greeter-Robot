@@ -2,7 +2,7 @@
 #include <Servo.h>
 #include <Robot.h>
 #include <Timer.h>
-#include <Subscriber.h>
+
 
 Robot robot;
 String input = "";
@@ -14,7 +14,7 @@ void setup()
 {
   Serial.begin(115200);
 
-  robot.neck.begin();
+  robot.begin();
   //lefthand.begin();
   startTimer.resetTimer();
   sub.init();
@@ -56,22 +56,18 @@ void loop()
   //lefthand.close();
 
   robot.startup(started);
-  sub.sendCom("Hello World");
+  
   if (startTimer.getTimer() > startTimer.getTime())
   {
-
-    // robot.leftArm.shakeHand();
-    // robot.rightArm.shakeHand();
-    // delay(5000);
-    // robot.leftArm.hand.fixed(50);
-    // robot.rightArm.hand.fixed(50);
-    // robot.leftArm.bicepExt.goToMax();
-    // delay(5000);
-
-    robot.neck.goToMax();
+   
+    robot.rightArm.moveArm(.5,.5,0,.5);
+    robot.rightArm.hand.fixed(80);
+    robot.rightArm.wrist.write(0);
+    delay(2000);
+    robot.rightArm.wrist.write(170);
+    robot.rightArm.hand.fixed(80);
     delay(5000);
-    robot.neck.goToMin();
-    delay(5000);
+    
   }
 
   // if (readSensor.getTimer() > readSensor.getTime())

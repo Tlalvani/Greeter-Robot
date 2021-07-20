@@ -7,13 +7,13 @@ import pyttsx3
   
 # initialisation of library
 engine = pyttsx3.init()
-
+engine.setProperty('voice', 'english-us')
+   
 
 def callback(data):
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    engine.say("Hi I am george jetson")
-	engine.say(data.data)
-	engine.runAndWait()
+    engine.say(data.data)
+    engine.runAndWait()
     
 def listener():
 
@@ -25,4 +25,9 @@ def listener():
     rospy.spin()
 
 if __name__ == '__main__':
+
+    engine.say("Hi I am george jetson")
+    #engine.say(data.data)
+    engine.runAndWait()
     listener()
+    
