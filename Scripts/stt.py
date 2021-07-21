@@ -3,7 +3,7 @@
 import rospy
 from std_msgs.msg import String
 import speech_recognition as sr
-
+import time
 
 r = sr.Recognizer()
 m = sr.Microphone()
@@ -19,6 +19,7 @@ def stt():
     while not rospy.is_shutdown():
         try:
             print("Say something!")
+            pub.publish('')
             with m as source: audio = r.listen(source)
             print("Got it! Now to recognize it...")
             try:
@@ -30,7 +31,7 @@ def stt():
                     out = (u"{}".format(value).encode("utf-8"))
                 else:  # this version of Python uses unicode for strings (Python 3+)
                     out = ("{}".format(value))
-                print(out)
+                
                 commands(out)
             except sr.UnknownValueError:
                 print("Oops! Didn't catch that")
@@ -42,11 +43,16 @@ def stt():
 
               
 def commands(string):
-    diction = ['hello',"handshake", 'high five' ]
+
+    string = string.replace("Hi-5", 'high five')
+    string = string.replace("-", ' ')
+    print(string)
+    diction = ['hello',"handshake", 'high five' , 'bye']
 
     for i in range(len(diction)):
         if diction[i] in string:
             pub.publish(diction[i])
+            time.sleep(1.1)
             break
 
          

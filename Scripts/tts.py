@@ -11,9 +11,11 @@ engine.setProperty('voice', 'english-us')
    
 
 def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    engine.say(data.data)
-    engine.runAndWait()
+    
+    if data.data !="":
+        rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+        engine.say(data.data)
+        engine.runAndWait()
     
 def listener():
 

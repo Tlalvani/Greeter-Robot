@@ -8,7 +8,7 @@ class Robot
 {
 
 private:
-    Subscriber sub;
+    bool started = false;
     Hand lefthand = Hand(
         Finger(23, 0, 0, 110, 100), //thumb, yellow analog
         Finger(25, 1, 0, 110, 50),
@@ -36,6 +36,7 @@ private:
     Joint rightShouldRot = Joint(46, 20, 180);
 
 public:
+    Subscriber sub;
     Arm leftArm = Arm(
         lefthand,
         leftWrist,
@@ -65,6 +66,7 @@ public:
         leftArm.begin();
         rightArm.begin();
         neck.begin();
+        // sub.init();
     }
 
     void goToMin()
@@ -74,7 +76,7 @@ public:
         neck.goToMin();
     }
 
-    void startup(bool &started)
+    void startup()
     {
         if (!started)
         {
@@ -82,9 +84,27 @@ public:
             leftArm.neutral();
             rightArm.neutral();
             started = true;
-            Serial.println("Startup");
-            //sub.sendCom("Startup");
         }
+    }
+
+    void listen()
+    {
+        String command = sub.getCom();
+        if (command == "hello")
+        {
+            sub.speak("Hello I am George");
+            sub.nh.loginfo("Hello");
+        }
+        else if (command == "high five")
+        {
+            rightArm.highFive();
+            sub.speak("Let's do it!");
+        }
+        else if (command == "bye"){
+            sub.speak("See you later");
+            started =false;
+        }
+        
     }
 };
 #endif
