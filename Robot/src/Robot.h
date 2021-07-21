@@ -30,7 +30,7 @@ private:
         Finger(45, 12, 0, 90, 100)  //grey analog, orange finger sensor wire
     );
     Joint rightWrist = Joint(47, 0, 180);
-    Joint rightBicepExt = Joint(49, 10, 100);
+    Joint rightBicepExt = Joint(49, 10, 90);
     Joint rightBicepRot = Joint(42, 0, 180);
     Joint rightShouldExt = Joint(44, 0, 55);
     Joint rightShouldRot = Joint(46, 20, 180);
@@ -66,7 +66,7 @@ public:
         leftArm.begin();
         rightArm.begin();
         neck.begin();
-        // sub.init();
+        sub.init();
     }
 
     void goToMin()
@@ -100,11 +100,17 @@ public:
             rightArm.highFive();
             sub.speak("Let's do it!");
         }
-        else if (command == "bye"){
+        else if (command == "bye")
+        {
             sub.speak("See you later");
-            started =false;
+            started = false;
         }
-        
+        else if (command == "hold")
+        {
+            sub.speak("Okay");
+            rightArm.holdTimer.resetTimer();
+            rightArm.throwball(sub);
+        }
     }
 };
 #endif

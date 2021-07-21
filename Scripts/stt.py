@@ -47,7 +47,7 @@ def commands(string):
     string = string.replace("Hi-5", 'high five')
     string = string.replace("-", ' ')
     print(string)
-    diction = ['hello',"handshake", 'high five' , 'bye']
+    diction = ['hello',"handshake", 'high five' , 'bye','hold','throw']
 
     for i in range(len(diction)):
         if diction[i] in string:
