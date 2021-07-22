@@ -1,7 +1,7 @@
 #ifndef HAND
 #define HAND
 #include <Finger.h>
-
+#include <Global.h>
 class Hand
 {
 
@@ -95,6 +95,15 @@ public:
         middle.close();
         index.close();
         thumb.close();
+    }
+
+    void moveHand(int t, int i, int m, int r, int p)
+    {
+        thumb.write(scale(t, thumb.getMin(), thumb.getMax()));
+        index.write(scale(i, index.getMin(), index.getMax()));
+        middle.write(scale(m, middle.getMin(), middle.getMax()));
+        ring.write(scale(r, ring.getMin(), ring.getMax()));
+        pinky.write(scale(p, pinky.getMin(), pinky.getMax()));
     }
 };
 #endif

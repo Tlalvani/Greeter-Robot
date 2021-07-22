@@ -1,7 +1,6 @@
 #ifndef ARM
 #define ARM
 #include <Hand.h>
-#include <Global.h>
 #include <Timer.h>
 #include <Subscriber.h>
 class Arm
