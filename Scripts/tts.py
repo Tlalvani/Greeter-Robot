@@ -29,6 +29,7 @@ def listener():
 if __name__ == '__main__':
 
     engine.say("Hi I am george jetson")
+    print("tts started")
     #engine.say(data.data)
     engine.runAndWait()
     listener()

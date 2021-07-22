@@ -1,0 +1,1 @@
+python ~/Github/GreeterRobot/Scripts/stt.py & python ~/Github/GreeterRobot/Scripts/tts.py

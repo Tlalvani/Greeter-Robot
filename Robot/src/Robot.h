@@ -1,6 +1,6 @@
 #ifndef ROBOT
 #define ROBOT
-#include <Arm.h>
+#include "Arm.h"
 #include <Neck.h>
 #include <Subscriber.h>
 
@@ -23,11 +23,11 @@ private:
     Joint leftShouldRot = Joint(40, 0, 180);
 
     Hand righthand = Hand(
-        Finger(37, 8, 0, 90, 100), //thumb, yellow analog, black digital, red finger sensor wire
-        Finger(39, 9, 0, 90, 100), //black finger sensor wire
-        Finger(41, 10, 0, 90, 100),
-        Finger(43, 11, 0, 90, 100), //grey finger sensor wire
-        Finger(45, 12, 0, 90, 100)  //grey analog, orange finger sensor wire
+        Finger(37, 8, 0, 90, 300), //thumb, yellow analog, black digital, red finger sensor wire
+        Finger(39, 9, 0, 90, 30),  //black finger sensor wire
+        Finger(41, 10, 0, 90, 150),
+        Finger(43, 11, 0, 90, 300), //grey finger sensor wire
+        Finger(45, 12, 0, 90, 10)   //grey analog, orange finger sensor wire
     );
     Joint rightWrist = Joint(47, 0, 180);
     Joint rightBicepExt = Joint(49, 10, 90);
@@ -109,7 +109,7 @@ public:
         {
             sub.speak("Okay");
             rightArm.holdTimer.resetTimer();
-            rightArm.throwball(sub);
+            rightArm.throwBall(sub);
         }
     }
 };
