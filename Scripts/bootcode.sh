@@ -1,2 +1,3 @@
 #!/bin/sh
-echo "Last reboot time: $(date)" > /etc/motd
+
+python3 ~/Github/GreeterRobot/Scripts/bootcode.py 

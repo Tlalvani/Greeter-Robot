@@ -124,6 +124,7 @@ public:
         leftArm.bicepExt.goToMin();
         if (spinTimer.getTimer() > spinTimer.getTime())
         {
+            sub.powerCheck();
             String mode = sub.getMode();
             if (mode == "Listen")
                 listen();

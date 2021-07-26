@@ -19,11 +19,10 @@ public:
     String stt_msg;
     String basic_msg;
     ros::Publisher tts;
+    ros::Publisher power;
     ros::Subscriber<std_msgs::String, Subscriber> mode;
     ros::Subscriber<std_msgs::String, Subscriber> stt;
     ros::Subscriber<std_msgs::String, Subscriber> basic;
-
-    ros::Publisher power;
 
     Subscriber() : tts("/listen", &tts_msg), power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this),
                    stt("/sendSpeechCom", &Subscriber::sttCallback, this), basic("/sendBasicCom", &Subscriber::basicCallback, this)
@@ -34,6 +33,7 @@ public:
         nh.getHardware()->setBaud(57600);
         nh.initNode();
         nh.advertise(tts);
+        nh.advertise(power);
         nh.subscribe(stt);
         nh.subscribe(mode);
         nh.subscribe(basic);
@@ -46,9 +46,9 @@ public:
     }
     void powerCheck()
     {
-        if (analogRead(A15) > 300)
+        if (analogRead(A15) > 600)
         {
-            nh.loginfo("Power On");
+            nh.loginfo("Power On: " + analogRead(A15));
             power_msg.data = "1";
         }
         else
