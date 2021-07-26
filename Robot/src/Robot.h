@@ -1,6 +1,6 @@
 #ifndef ROBOT
 #define ROBOT
-#include "Arm.h"
+#include <Arm.h>
 #include <Neck.h>
 #include <Subscriber.h>
 
@@ -8,6 +8,7 @@ class Robot
 {
 
 private:
+    Timer spinTimer = Timer(1000);
     bool started = false;
     Hand lefthand = Hand(
         Finger(23, 0, 0, 110, 100), //thumb, yellow analog
@@ -17,7 +18,7 @@ private:
         Finger(31, 4, 0, 90, 300) //grey analog
     );
     Joint leftWrist = Joint(33, 0, 180);
-    Joint leftBicepExt = Joint(35, 110, 170);
+    Joint leftBicepExt = Joint(35, 110, 160);
     Joint leftBicepRot = Joint(36, 0, 180);
     Joint leftShouldExt = Joint(38, 0, 55);
     Joint leftShouldRot = Joint(40, 0, 180);
@@ -89,7 +90,7 @@ public:
 
     void listen()
     {
-        String command = sub.getCom();
+        String command = sub.getSpeechCom();
         if (command == "hello")
         {
             sub.speak("Hello I am George");
@@ -110,6 +111,26 @@ public:
             sub.speak("Okay");
             rightArm.holdTimer.resetTimer();
             rightArm.throwBall(sub);
+        }
+    }
+    void basic()
+    {
+        leftArm.basicMoveArm(true);
+        rightArm.basicMoveArm(false);
+    }
+
+    void remoteControl() //Calls Listen and Basic
+    {
+        leftArm.bicepExt.goToMin();
+        if (spinTimer.getTimer() > spinTimer.getTime())
+        {
+            String mode = sub.getMode();
+            if (mode == "Listen")
+                listen();
+            else if (mode == "Basic")
+                basic();
+            sub.nh.spinOnce();
+            spinTimer.resetTimer();
         }
     }
 };

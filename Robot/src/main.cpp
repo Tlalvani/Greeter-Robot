@@ -5,7 +5,6 @@
 Robot robot;
 
 Timer startTimer(5000);
-Timer spinTimer(1000);
 
 void setup()
 {
@@ -16,15 +15,9 @@ void setup()
 void loop()
 {
   robot.startup();
-
+  
   if (startTimer.getTimer() > startTimer.getTime())
   {
-
-    if (spinTimer.getTimer() > spinTimer.getTime())
-    {
-      robot.listen();
-      robot.sub.nh.spinOnce();
-      spinTimer.resetTimer();
-    }
+    robot.remoteControl();
   }
 }

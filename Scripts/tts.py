@@ -21,7 +21,7 @@ def listener():
 
     rospy.init_node('listener', anonymous=True)
 
-    rospy.Subscriber("ttsOut", String, callback)
+    rospy.Subscriber("listen", String, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

@@ -58,7 +58,7 @@ public:
 
     void throwBall(Subscriber &sub)
     {
-        String comm = sub.getCom();
+        String comm = sub.getSpeechCom();
         moveArm(.7, .75, 0, .3);
         wrist.goToMin();
         hand.fixed(40);
@@ -88,7 +88,7 @@ public:
             }
             if (commTimer.getTimer() > commTimer.getTime())
             {
-                comm = sub.getCom();
+                comm = sub.getSpeechCom();
                 sub.nh.spinOnce();
                 commTimer.resetTimer();
             }
@@ -108,33 +108,31 @@ public:
     {
         hand.goToMin();
         wrist.goToMin();
-        // bicepExt.write(170);
-        // bicepRot.write(90);
-        // shouldExt.write(0);
-        // shouldRot.write(0);
         moveArm(1, .5, 0, 0);
     }
 
     void moveArm(float bExten, float bRot, float sExten, float sRot)
     {
+        bicepExt.scale_write(bExten);
+        bicepRot.scale_write(bRot);
+        shouldExt.scale_write(sExten);
+        shouldRot.scale_write(sRot);
+    }
 
-        // Serial.print("\nBicepExt ");
-        // Serial.println(scale(bExten, bicepExt.getMin(), bicepExt.getMax()));
-
-        // Serial.print("\nBicepRot ");
-        // Serial.println(scale(bRot, bicepRot.getMin(), bicepRot.getMax()));
-
-        // Serial.print("\nShouldExt ");
-        // Serial.println(scale(sExten, shouldExt.getMin(), shouldExt.getMax()));
-
-        // Serial.print("\nShouldRot ");
-        // Serial.println(scale(sRot, shouldRot.getMin(), shouldRot.getMax()));
-
-        // delay(10000);
-        bicepExt.write(scale(bExten, bicepExt.getMin(), bicepExt.getMax()));
-        bicepRot.write(scale(bRot, bicepRot.getMin(), bicepRot.getMax()));
-        shouldExt.write(scale(sExten, shouldExt.getMin(), shouldExt.getMax()));
-        shouldRot.write(scale(sRot, shouldRot.getMin(), shouldRot.getMax()));
+    void basicMoveArm(bool left)
+    {
+        if (left)
+        {
+            moveArm(basicArray[0], basicArray[1], basicArray[2], basicArray[3]);
+            wrist.scale_write(basicArray[9]);
+            hand.basicMoveHand(left);
+        }
+        else
+        {
+            moveArm(basicArray[10], basicArray[11], basicArray[12], basicArray[13]);
+            wrist.scale_write(basicArray[19]);
+            hand.basicMoveHand(left);
+        }
     }
 };
 #endif

@@ -1,7 +1,6 @@
 #ifndef HAND
 #define HAND
 #include <Finger.h>
-#include <Global.h>
 class Hand
 {
 
@@ -99,11 +98,19 @@ public:
 
     void moveHand(int t, int i, int m, int r, int p)
     {
-        thumb.write(scale(t, thumb.getMin(), thumb.getMax()));
-        index.write(scale(i, index.getMin(), index.getMax()));
-        middle.write(scale(m, middle.getMin(), middle.getMax()));
-        ring.write(scale(r, ring.getMin(), ring.getMax()));
-        pinky.write(scale(p, pinky.getMin(), pinky.getMax()));
+        thumb.scale_write(t);
+        index.scale_write(i);
+        middle.scale_write(m);
+        ring.scale_write(r);
+        pinky.scale_write(p);
+    }
+
+    void basicMoveHand(bool left)
+    {
+        if (left)
+            moveHand(basicArray[8], basicArray[4], basicArray[5], basicArray[7], basicArray[6]);
+        else 
+            moveHand(basicArray[18], basicArray[14], basicArray[1], basicArray[17], basicArray[16]);
     }
 };
 #endif

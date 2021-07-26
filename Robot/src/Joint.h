@@ -2,6 +2,7 @@
 #define JOINT
 #include <Servo.h>
 #include "Arduino.h"
+#include <Global.h>
 
 class Joint
 {
@@ -52,6 +53,11 @@ public:
             joint.write(pos);
         }
     }
+
+    void scale_write(float pos) //from 0 to 1
+    {
+        write(scale(pos, getMin(), getMax()));
+        }
 
     void goToMin()
     {
