@@ -1,7 +1,7 @@
 #ifndef ROBOT
 #define ROBOT
 #include <Arm.h>
-#include <Neck.h>
+#include <Head.h>
 #include <Subscriber.h>
 
 class Robot
@@ -59,6 +59,11 @@ public:
         Joint(48, 10, 70),
         Joint(50, 10, 70) //right neck orange digital
     );
+
+    Head head = Head(
+        neck,
+        Joint(53, 0, 180),
+        Joint(54, 0, 10));
 
     Robot() {}
 
