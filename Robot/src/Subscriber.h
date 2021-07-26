@@ -14,16 +14,18 @@ private:
 public:
     ros::NodeHandle nh;
     std_msgs::String tts_msg;
+    std_msgs::String power_msg;
     String mode_msg;
     String stt_msg;
     String basic_msg;
     ros::Publisher tts;
     ros::Subscriber<std_msgs::String, Subscriber> mode;
     ros::Subscriber<std_msgs::String, Subscriber> stt;
-
     ros::Subscriber<std_msgs::String, Subscriber> basic;
 
-    Subscriber() : tts("/listen", &tts_msg), mode("/sendMode", &Subscriber::modeCallback, this),
+    ros::Publisher power;
+
+    Subscriber() : tts("/listen", &tts_msg), power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this),
                    stt("/sendSpeechCom", &Subscriber::sttCallback, this), basic("/sendBasicCom", &Subscriber::basicCallback, this)
     {
     }
@@ -40,6 +42,18 @@ public:
     {
         tts_msg.data = command.c_str();
         tts.publish(&tts_msg);
+        //nh.spinOnce(); // this was maybe reason it failed
+    }
+    void powerCheck()
+    {
+        if (analogRead(A15) > 300)
+        {
+            nh.loginfo("Power On");
+            power_msg.data = "1";
+        }
+        else
+            power_msg.data = "0";
+        power.publish(&power_msg);
         //nh.spinOnce(); // this was maybe reason it failed
     }
     void modeCallback(const std_msgs::String &out)
