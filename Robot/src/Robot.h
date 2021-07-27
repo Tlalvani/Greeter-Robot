@@ -95,11 +95,13 @@ public:
 
     void listen()
     {
+
         String command = sub.getSpeechCom();
+        //sub.nh.loginfo(command.c_str());
         if (command == "hello")
         {
-            sub.speak("Hello I am George");
             sub.nh.loginfo("Hello");
+            sub.speak("Hi How are you");
         }
         else if (command == "high five")
         {
@@ -126,13 +128,15 @@ public:
 
     void remoteControl() //Calls Listen and Basic
     {
-        leftArm.bicepExt.goToMin();
+
         if (spinTimer.getTimer() > spinTimer.getTime())
         {
             sub.powerCheck();
             String mode = sub.getMode();
             if (mode == "Listen")
+            {
                 listen();
+            }
             else if (mode == "Basic")
                 basic();
             sub.nh.spinOnce();

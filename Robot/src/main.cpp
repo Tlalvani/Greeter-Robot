@@ -5,7 +5,6 @@
 Robot robot;
 
 Timer startTimer(5000);
-
 void setup()
 {
   robot.begin();
@@ -15,7 +14,7 @@ void setup()
 void loop()
 {
   robot.startup();
-  
+
   if (startTimer.getTimer() > startTimer.getTime())
   {
     robot.remoteControl();

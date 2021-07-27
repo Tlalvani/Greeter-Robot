@@ -8,19 +8,19 @@ import sys
 state = False
 
 def callback(data):
-    global state, pid1, pid2, pid3
+    global state, pid1, pid2
     
-        print(state)
-        if data.data == '0' and state :
-            pid1.terminate()
-            pid2.terminate()
-            pid3.terminate()
-            state = False
-        elif data.data =='1' and not state:
-            pid1 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/listener.py"])
-            pid2 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/Firebase/firebase.py"])
-            pid3 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/speaker.py"])
-            state = True
+    
+    if data.data == '0' and state :
+        pid1.terminate()
+        pid2.terminate()
+        state = False
+        print("FALSE")
+    elif data.data =='1' and not state:
+        pid1 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/subscriber.py"])
+        pid2 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/speaker.py"])
+        state = True
+        print("TRUE")
                 
 def power():
 

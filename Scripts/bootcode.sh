@@ -1,0 +1,2 @@
+#!/bin/bash
+source /opt/ros/melodic/setup.bash; roscore & sleep 5 &&  rosrun rosserial_python serial_node.py /dev/ttyACM0 _baud:=57600 & sleep 7 && gnome-terminal -- python3 Github/GreeterRobot/Scripts/bootcode.py
