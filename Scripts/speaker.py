@@ -19,9 +19,9 @@ def callback(data):
     
 def listener():
 
-    rospy.init_node('listener', anonymous=True)
+    rospy.init_node('Speaker', anonymous=True)
 
-    rospy.Subscriber("listen", String, callback)
+    rospy.Subscriber("/speaker", String, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
@@ -29,8 +29,8 @@ def listener():
 if __name__ == '__main__':
 
     engine.say("Hi I am george jetson")
-    print("tts started")
-    #engine.say(data.data)
+    print("Speaker started")
+    #engine.say(data.data)``
     engine.runAndWait()
     listener()
     

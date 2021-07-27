@@ -62,7 +62,7 @@ public:
 
     Head head = Head(
         neck,
-        Joint(53, 0, 180),
+        Joint(53, 0, 180), // neck and jaw move conjoined if only writing to one
         Joint(54, 0, 10));
 
     Robot() {}

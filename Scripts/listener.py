@@ -8,8 +8,8 @@ import time
 r = sr.Recognizer()
 m = sr.Microphone()
 
-pub = rospy.Publisher('sendSpeechCom', String, queue_size=10)
-rospy.init_node('stt', anonymous=True)
+pub = rospy.Publisher('listen', String, queue_size=10)
+rospy.init_node('Listener', anonymous=True)
 rate = rospy.Rate(10) # 10hz
 
 def stt():
@@ -59,7 +59,7 @@ def commands(string):
 
 if __name__ == '__main__':
     try:
-        print('stt.py started')
+        print('Listener started')
         stt()
     except rospy.ROSInterruptException:
         pass

@@ -24,8 +24,8 @@ public:
     ros::Subscriber<std_msgs::String, Subscriber> stt;
     ros::Subscriber<std_msgs::String, Subscriber> basic;
 
-    Subscriber() : tts("/listen", &tts_msg), power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this),
-                   stt("/sendSpeechCom", &Subscriber::sttCallback, this), basic("/sendBasicCom", &Subscriber::basicCallback, this)
+    Subscriber() : tts("/speaker", &tts_msg), power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this),
+                   stt("/listen", &Subscriber::sttCallback, this), basic("/sendBasicCom", &Subscriber::basicCallback, this)
     {
     }
     void init()
@@ -46,7 +46,7 @@ public:
     }
     void powerCheck()
     {
-        if (analogRead(A15) > 600)
+        if (analogRead(A15) > 500)
         {
             nh.loginfo("Power On: " + analogRead(A15));
             power_msg.data = "1";
