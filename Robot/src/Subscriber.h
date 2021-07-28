@@ -3,45 +3,46 @@
 
 #include <ros.h>
 #include <std_msgs/String.h>
-#include <std_msgs/Float64MultiArray.h>
-
-#include <Joint.h> // for the global.h call since <global.h> can't be called twice
-
 class Subscriber
 {
 
 private:
 public:
     ros::NodeHandle nh;
-    std_msgs::String tts_msg;
-    std_msgs::String power_msg;
-    String mode_msg;
-    String stt_msg;
-    String basic_msg;
-    ros::Publisher tts;
-    ros::Publisher power;
-    ros::Subscriber<std_msgs::String, Subscriber> mode;
-    ros::Subscriber<std_msgs::String, Subscriber> stt;
-    ros::Subscriber<std_msgs::String, Subscriber> basic;
 
-    Subscriber() : tts("/speaker", &tts_msg), power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this),
-                   stt("/listen", &Subscriber::sttCallback, this), basic("/sendBasicCom", &Subscriber::basicCallback, this)
+    ros::Publisher speaker;
+    std_msgs::String speaker_msg;
+
+    ros::Publisher power;
+    std_msgs::String power_msg;
+
+    ros::Subscriber<std_msgs::String, Subscriber> listener;
+    String listener_msg;
+
+    ros::Subscriber<std_msgs::String, Subscriber> basic;
+    String basic_msg;
+
+    ros::Subscriber<std_msgs::String, Subscriber> mode;
+    String mode_msg;
+
+    Subscriber() : speaker("/speaker", &speaker_msg), listener("/listener", &Subscriber::listenerCallback, this),
+                   basic("/sendBasicCom", &Subscriber::basicCallback, this), mode("/sendMode", &Subscriber::modeCallback, this), power("/power", &power_msg)
     {
     }
     void init()
     {
         nh.getHardware()->setBaud(57600);
         nh.initNode();
-        nh.advertise(tts);
-        nh.advertise(power);
-        nh.subscribe(stt);
+        nh.advertise(speaker);
+        nh.subscribe(listener);
         nh.subscribe(mode);
         nh.subscribe(basic);
+        nh.advertise(power);
     }
     void speak(String command)
     {
-        tts_msg.data = command.c_str();
-        tts.publish(&tts_msg);
+        speaker_msg.data = command.c_str();
+        speaker.publish(&speaker_msg);
         //nh.spinOnce(); // this was maybe reason it failed
     }
     void powerCheck()
@@ -56,17 +57,26 @@ public:
         power.publish(&power_msg);
         //nh.spinOnce(); // this was maybe reason it failed
     }
-    void modeCallback(const std_msgs::String &out)
+    void listenerCallback(const std_msgs::String &outL)
     {
-        mode_msg = out.data;
+        nh.loginfo("LCall");
+        listener_msg = outL.data;
     }
-    void sttCallback(const std_msgs::String &out)
+
+    String getSpeechCom()
     {
-        stt_msg = out.data;
+        return listener_msg;
     }
-    void basicCallback(const std_msgs::String &out)
+
+    String getMode()
     {
-        basic_msg = out.data;
+        return mode_msg;
+    }
+
+    void basicCallback(const std_msgs::String &outB)
+    {
+        nh.loginfo("BCall");
+        basic_msg = outB.data;
         String temp = "";
         int count = 0;
         for (auto i : basic_msg)
@@ -88,13 +98,11 @@ public:
             }
         }
     }
-    String getMode()
+
+    void modeCallback(const std_msgs::String &outM)
     {
-        return mode_msg;
-    }
-    String getSpeechCom()
-    {
-        return stt_msg;
+        nh.loginfo("MCall");
+        mode_msg = outM.data;
     }
 };
 #endif
