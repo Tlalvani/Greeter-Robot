@@ -40,8 +40,11 @@ public:
         right.goToMax();
     }
 
-    void lean(int pos)
+    void look(float vertical, float tilt)
     {
-        }
+        front.scale_write(vertical, 0, 1);
+        left.scale_write(tilt, 0, 1);
+        right.scale_write(tilt, 1, 0);
+    }
 };
 #endif

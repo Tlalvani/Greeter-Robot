@@ -39,5 +39,11 @@ public:
         headRot.goToMax();
         mouth.goToMax();
     }
+
+    void look(float vertical, float tilt, float rotate)
+    {
+        neck.look(vertical, tilt);
+        headRot.scale_write(rotate, 0, 1);
+    }
 };
 #endif

@@ -3,9 +3,6 @@ import 'package:greeter_robot/services/authFB.dart';
 import 'package:greeter_robot/services/db.dart';
 import 'package:flutter/services.dart';
 
-double buttonDistance = 40;
-
-
 
 
 class Basic extends StatelessWidget {
@@ -25,6 +22,7 @@ class Basic extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    const double buttonDistance = 40;
     return Scaffold(
       appBar: AppBar(
         title: Text("Basic Control"),
@@ -60,6 +58,7 @@ class Basic extends StatelessWidget {
 
 TextFormField inputField(String label, RefWrapper value){
   return TextFormField(
+    initialValue: value.getVal(),
     keyboardType: TextInputType.number,
     inputFormatters: <TextInputFormatter>[
       FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
@@ -92,7 +91,7 @@ String validate(var val){
 class RightArm extends StatelessWidget {
   var _formKey = GlobalKey<FormState>();
 
-  List<RefWrapper> moveArm = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
+  List<RefWrapper> moveArm = [RefWrapper('1'), RefWrapper('.5'), RefWrapper('0'), RefWrapper('0')];
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +135,7 @@ class RightArm extends StatelessWidget {
 }
 
 class LeftArm extends StatelessWidget {
-  List<RefWrapper> moveArm = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
+  List<RefWrapper> moveArm = [RefWrapper('1'), RefWrapper('.5'), RefWrapper('0'), RefWrapper('0')];
   var _formKey = GlobalKey<FormState>();
 
   @override

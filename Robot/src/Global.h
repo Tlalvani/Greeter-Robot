@@ -6,9 +6,9 @@ float clip(float n, float lower, float upper)
                                            : n;
 }
 
-float scale(float n, float min, float max) //Scale 0-1
+float scale(float n, float min, float max, float scaleMin, float scaleMax) //Convert min to scaleMin and max to scaleMax
 {
-    return (n * (max - min) + min);
+    return (((n - scaleMin) / (scaleMax - scaleMin)) * (max - min) + min);
 }
 
-float basicArray[SERVOS]  = {1, .5, 0, 0, 0, 0, 0, 0, 0, 0, 1, .5, 0, 0, 0, 0, 0, 0, 0, 0};
+float basicArray[SERVOS] = {1, .5, 0, 0, 0, 0, 0, 0, 0, 0, 1, .5, 0, 0, 0, 0, 0, 0, 0, 0};

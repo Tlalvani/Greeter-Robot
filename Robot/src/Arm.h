@@ -40,14 +40,8 @@ public:
     void shakeHand()
     {
         wrist.goToMin();
-        //hand.goToMin();
-        //hand.close();
         hand.fixed(0);
         moveArm(.75, .6, 0, .25);
-        // bicepExt.write(140);
-        // bicepRot.write(110);
-        // shouldExt.write(0);
-        // shouldRot.write(45);
     }
 
     void highFive()
@@ -113,10 +107,10 @@ public:
 
     void moveArm(float bExten, float bRot, float sExten, float sRot)
     {
-        bicepExt.scale_write(bExten);
-        bicepRot.scale_write(bRot);
-        shouldExt.scale_write(sExten);
-        shouldRot.scale_write(sRot);
+        bicepExt.scale_write(bExten, 0, 1);
+        bicepRot.scale_write(bRot, 0, 1);
+        shouldExt.scale_write(sExten, 0, 1);
+        shouldRot.scale_write(sRot, 0, 1);
     }
 
     void basicMoveArm(bool left)
@@ -124,13 +118,13 @@ public:
         if (left)
         {
             moveArm(basicArray[0], basicArray[1], basicArray[2], basicArray[3]);
-            wrist.scale_write(basicArray[9]);
+            wrist.scale_write(basicArray[9],0,1);
             hand.basicMoveHand(left);
         }
         else
         {
             moveArm(basicArray[10], basicArray[11], basicArray[12], basicArray[13]);
-            wrist.scale_write(basicArray[19]);
+            wrist.scale_write(basicArray[19], 0, 1);
             hand.basicMoveHand(left);
         }
     }

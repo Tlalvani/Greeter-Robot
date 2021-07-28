@@ -98,11 +98,11 @@ public:
 
     void moveHand(int t, int i, int m, int r, int p)
     {
-        thumb.scale_write(t);
-        index.scale_write(i);
-        middle.scale_write(m);
-        ring.scale_write(r);
-        pinky.scale_write(p);
+        thumb.scale_write(t,0,1);
+        index.scale_write(i,0,1);
+        middle.scale_write(m,0,1);
+        ring.scale_write(r,0,1);
+        pinky.scale_write(p,0,1);
     }
 
     void basicMoveHand(bool left)

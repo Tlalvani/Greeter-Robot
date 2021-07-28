@@ -54,10 +54,10 @@ public:
         }
     }
 
-    void scale_write(float pos) //from 0 to 1
+    void scale_write(float pos, float scaleMin, float scaleMax) //from 0 to 1
     {
-        write(scale(pos, getMin(), getMax()));
-        }
+        write(scale(pos, getMin(), getMax(), scaleMin, scaleMax));
+    }
 
     void goToMin()
     {
