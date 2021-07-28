@@ -5,7 +5,24 @@ import 'package:flutter/services.dart';
 
 double buttonDistance = 40;
 
+
+
+
 class Basic extends StatelessWidget {
+  ElevatedButton button(BuildContext context, String text, String path){
+    return ElevatedButton(
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        // background color
+        primary: Colors.blue,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        textStyle: TextStyle(fontSize: 20),
+      ),
+      onPressed: () {
+        Navigator.pushNamed(context, path);
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,82 +35,46 @@ class Basic extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 20),
           ),
-          ElevatedButton(
-            child: Text('Left Arm'),
-            style: ElevatedButton.styleFrom(
-              // background color
-              primary: Colors.blue,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              textStyle: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/leftarm');
-            },
-          ),
+          button(context, 'Left Arm', '/leftarm'),
           Padding(
             padding: EdgeInsets.only(top: buttonDistance),
           ),
-          ElevatedButton(
-            child: Text('Right Arm'),
-            style: ElevatedButton.styleFrom(
-              // background color
-              primary: Colors.blue,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              textStyle: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/rightarm');
-            },
-          ),
+          button(context, 'Right Arm', '/rightarm'),
           Padding(
             padding: EdgeInsets.only(top: buttonDistance),
           ),
-          ElevatedButton(
-            child: Text('Left Hand'),
-            style: ElevatedButton.styleFrom(
-              // background color
-              primary: Colors.blue,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              textStyle: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/lefthand');
-            },
-          ),
+          button(context, 'Left Hand', '/lefthand'),
           Padding(
             padding: EdgeInsets.only(top: buttonDistance),
           ),
-          ElevatedButton(
-            child: Text('Right Hand'),
-            style: ElevatedButton.styleFrom(
-              // background color
-              primary: Colors.blue,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              textStyle: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/righthand');
-            },
-          ),
+          button(context, 'Right Hand', '/righthand'),
           Padding(
             padding: EdgeInsets.only(top: buttonDistance),
           ),
-          ElevatedButton(
-            child: Text('Neck'),
-            style: ElevatedButton.styleFrom(
-              // background color
-              primary: Colors.blue,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              textStyle: TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/neck');
-            },
-          ),
+          button(context, 'Head', '/head'),
         ]),
       ),
     );
   }
+}
+
+TextFormField inputField(String label, RefWrapper value){
+  return TextFormField(
+    keyboardType: TextInputType.number,
+    inputFormatters: <TextInputFormatter>[
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+    ],
+    decoration: InputDecoration(
+      labelText: label,
+      hintText: "Enter a number 0-1",
+    ),
+    validator: (val) {
+      return validate(val);
+    },
+    onChanged: (val) {
+      alter(value, val);
+    },
+  );
 }
 
 String validate(var val){
@@ -107,10 +88,11 @@ String validate(var val){
     return null;
   }
 }
+
 class RightArm extends StatelessWidget {
   var _formKey = GlobalKey<FormState>();
 
-  List<String> moveArm = ['0', '0', '0', '0'];
+  List<RefWrapper> moveArm = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
 
   @override
   Widget build(BuildContext context) {
@@ -124,70 +106,10 @@ class RightArm extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Bicep Extension",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[0] = val;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Bicep Rotation",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[1] = val;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Shoulder Extension",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[2]= val;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Shoulder Rotation",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[3] = val;
-                },
-              ),
+              inputField("Bicep Extension", moveArm[0]),
+              inputField("Bicep Rotation", moveArm[1]),
+              inputField("Shoulder Extension", moveArm[2]),
+              inputField("Shoulder Rotation", moveArm[3]),
               Padding(
                 padding: EdgeInsets.only(top: 15),
               ),
@@ -201,7 +123,6 @@ class RightArm extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    print('$moveArm[0]');
                     AuthService().setRightArm(moveArm);
                   }
                 },
@@ -215,7 +136,7 @@ class RightArm extends StatelessWidget {
 }
 
 class LeftArm extends StatelessWidget {
-  List<String> moveArm = ['0', '0', '0', '0'];
+  List<RefWrapper> moveArm = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
   var _formKey = GlobalKey<FormState>();
 
   @override
@@ -230,70 +151,10 @@ class LeftArm extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Bicep Extension",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[0] = val;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Bicep Rotation",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[1] = val;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Shoulder Extension",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[2] = val;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Shoulder Rotation",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveArm[3] = val;
-                },
-              ),
+              inputField("Bicep Extension", moveArm[0]),
+              inputField("Bicep Rotation", moveArm[1]),
+              inputField("Shoulder Extension", moveArm[2]),
+              inputField("Shoulder Rotation", moveArm[3]),
               Padding(
                 padding: EdgeInsets.only(top: 15),
               ),
@@ -320,7 +181,7 @@ class LeftArm extends StatelessWidget {
 }
 
 class LeftHand extends StatelessWidget {
-  List<String> moveHand = ['0', '0', '0', '0', '0', '0'];
+  List<RefWrapper> moveHand = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
   var _formKey = GlobalKey<FormState>();
 
   @override
@@ -334,96 +195,12 @@ class LeftHand extends StatelessWidget {
         child: Form(
           key: _formKey,
           child: Column(children: <Widget>[
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Thumb",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[0] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Index",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[1] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Middle",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[2] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Ring",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[3] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Pinky",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[4] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Wrist",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[5] = val;
-                }),
+            inputField("Thumb", moveHand[0]),
+            inputField("Index", moveHand[1]),
+            inputField("Middle", moveHand[2]),
+            inputField("Ring", moveHand[3]),
+            inputField("Pinky", moveHand[4]),
+            inputField("Wrist", moveHand[5]),
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
@@ -449,7 +226,7 @@ class LeftHand extends StatelessWidget {
 }
 
 class RightHand extends StatelessWidget {
-  List<String> moveHand = ['0', '0', '0', '0', '0', '0'];
+  List<RefWrapper> moveHand = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
   var _formKey = GlobalKey<FormState>();
 
   @override
@@ -463,96 +240,12 @@ class RightHand extends StatelessWidget {
         child: Form(
           key: _formKey,
           child: Column(children: <Widget>[
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Thumb",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[0] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Index",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[1] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Middle",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[2] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Ring",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[3] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Pinky",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[4] = val;
-                }),
-            TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: "Wrist",
-                  hintText: "Enter a number 0-1",
-                ),
-                validator: (val) {
-                  return validate(val);
-                },
-                onChanged: (val) {
-                  moveHand[5] = val;
-                }),
+            inputField("Thumb", moveHand[0]),
+            inputField("Index", moveHand[1]),
+            inputField("Middle", moveHand[2]),
+            inputField("Ring", moveHand[3]),
+            inputField("Pinky", moveHand[4]),
+            inputField("Wrist", moveHand[5]),
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
@@ -577,15 +270,15 @@ class RightHand extends StatelessWidget {
   }
 }
 
-class Neck extends StatelessWidget {
-  List<String> moveHand = ['0', '0', '0', '0', '0', '0'];
+class Head extends StatelessWidget {
+  List<RefWrapper> moveHead = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
   var _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Right Hand"),
+        title: Text("Head"),
         backgroundColor: Colors.blue,
       ),
       body: Center(
@@ -603,7 +296,7 @@ class Neck extends StatelessWidget {
               textStyle: TextStyle(fontSize: 20),
             ),
             onPressed: () {
-              AuthService().setNeck(moveHand);
+              AuthService().setNeck(moveHead);
             },
           ),
         ]),

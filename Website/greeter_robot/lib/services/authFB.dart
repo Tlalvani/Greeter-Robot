@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:greeter_robot/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
+
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -58,12 +60,12 @@ class AuthService {
     }
   }
 
-  Future setRightArm(List<String> input) async {
+  Future setRightArm(List<RefWrapper> input) async {
     try {
       final User userA = _auth.currentUser;
       final uidA = userA.uid;
 
-      await DbService(uid: uidA).updateRightArm(input);
+      await DbService(uid: uidA).updateArm(input, 'rightArm');
       return userFirebase(userA);
     } catch (error) {
       print(error.toString());
@@ -71,12 +73,12 @@ class AuthService {
     }
   }
 
-  Future setLeftArm(List<String> input) async {
+  Future setLeftArm(List<RefWrapper> input) async {
     try {
       final User userA = _auth.currentUser;
       final uidA = userA.uid;
 
-      await DbService(uid: uidA).updateLeftArm(input);
+      await DbService(uid: uidA).updateArm(input, 'leftArm');
       return userFirebase(userA);
     } catch (error) {
       print(error.toString());
@@ -84,12 +86,12 @@ class AuthService {
     }
   }
 
-  Future setRightHand(List<String> input) async {
+  Future setRightHand(List<RefWrapper> input) async {
     try {
       final User userA = _auth.currentUser;
       final uidA = userA.uid;
 
-      await DbService(uid: uidA).updateRightHand(input);
+      await DbService(uid: uidA).updateHand(input, 'rightHand');
       return userFirebase(userA);
     } catch (error) {
       print(error.toString());
@@ -97,12 +99,12 @@ class AuthService {
     }
   }
 
-  Future setLeftHand(List<String> input) async {
+  Future setLeftHand(List<RefWrapper> input) async {
     try {
       final User userA = _auth.currentUser;
       final uidA = userA.uid;
 
-      await DbService(uid: uidA).updateLeftHand(input);
+      await DbService(uid: uidA).updateHand(input, 'leftHand');
       return userFirebase(userA);
     } catch (error) {
       print(error.toString());
@@ -110,7 +112,7 @@ class AuthService {
     }
   }
 
-  Future setNeck(List<String> input) async {
+  Future setNeck(List<RefWrapper> input) async {
     try {
       final User userA = _auth.currentUser;
       final uidA = userA.uid;

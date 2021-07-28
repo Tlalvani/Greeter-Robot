@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           '/leftarm': (context) => LeftArm(),
           '/lefthand': (context) => LeftHand(),
           '/righthand': (context) => RightHand(),
-          '/neck': (context) => Neck(),
+          '/head': (context) => Head(),
 
 
         },
