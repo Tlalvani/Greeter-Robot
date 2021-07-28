@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import requests
 import rospy
 from std_msgs.msg import String
 import speech_recognition as sr
@@ -7,7 +7,8 @@ import time
 
 from firebase_admin import credentials
 import firebase_admin
-from google.cloud import firestore
+from google.cloud import firestore, storage
+import datetime
 import os
 
 #Listen 
@@ -15,11 +16,13 @@ r = sr.Recognizer()
 m = sr.Microphone()
 
 #Firebase
-path = "/home/george/Github/GreeterRobot/Scripts/key.json"
+folderpath = "/home/george/Github/GreeterRobot/Scripts/"
+path = folderpath + "key.json"
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path
 cred = credentials.Certificate(path)
-firebase_admin.initialize_app(cred)
+app = firebase_admin.initialize_app(cred)
 db = firestore.Client()
+
 
 #Ros
 pubBasic = rospy.Publisher('sendBasicCom', String, queue_size=10)
@@ -55,7 +58,7 @@ def listener():
                 print("Uh oh! Couldn't request results from Google Speech Recognition service; {0}".format(e))
             rate.sleep()
             mode_out = mode()
-        except KeyboardInterupt:
+        except KeyboardInterrupt:
             pass
         
 
@@ -91,6 +94,17 @@ def mode():
     mode_val = db.collection(u'Misc').document(u'Mode').get().to_dict()["Mode"]
     pubMode.publish(mode_val)
     return mode_val
+
+def encodeImage():
+    client = storage.Client()
+    bucket = client.bucket("greeterrobot.appspot.com")
+    blob = bucket.blob("Images/Tej.jpg")
+    url = blob.generate_signed_url(datetime.timedelta(seconds=300), method='GET')
+    print(url)
+    with open(folderpath +"1.jpg", "wb") as file_obj:
+        file_obj.write(requests.get(url).content)
+        file_obj.close()
+
          
 
 if __name__ == '__main__':
@@ -100,10 +114,14 @@ if __name__ == '__main__':
             try:
                 mode_out = mode()
                 if mode_out == "Listen":
+                    print("Lisent started")
                     listener()
                 elif mode_out == "Basic":
+                    print("Basic started")
                     basic()
-            except KeyboardInterupt:
+                elif mode_out == "Encode":
+                    encodeImage()
+            except KeyboardInterrupt:
                 pass
     except rospy.ROSInterruptException:
         pass
