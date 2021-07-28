@@ -36,6 +36,13 @@ private:
     Joint rightShouldExt = Joint(44, 0, 55);
     Joint rightShouldRot = Joint(46, 20, 180);
 
+    Joint front = Joint(34, 40, 100);
+    Joint left = Joint(48, 30, 70);
+    Joint right = Joint(50, 30, 70);
+
+    Joint headRot = Joint(52, 0, 180);
+    Joint mouth = Joint(53, 0, 10);
+
 public:
     Subscriber sub;
     Arm leftArm = Arm(
@@ -55,15 +62,15 @@ public:
         rightShouldRot);
 
     Neck neck = Neck(
-        Joint(34, 40, 100),
-        Joint(48, 10, 70),
-        Joint(50, 10, 70) //right neck orange digital
+        front,
+        left,
+        right //right neck orange digital
     );
 
     Head head = Head(
         neck,
-        Joint(52, 0, 180), // neck and jaw move conjoined if only writing to one
-        Joint(53, 0, 10));
+        headRot, // neck and jaw move conjoined if only writing to one
+        mouth);
 
     Robot() {}
 
@@ -71,7 +78,7 @@ public:
     {
         leftArm.begin();
         rightArm.begin();
-        neck.begin();
+        head.begin();
         sub.init();
     }
 
@@ -79,7 +86,7 @@ public:
     {
         leftArm.goToMin();
         rightArm.goToMin();
-        neck.goToMin();
+        head.goToMin();
     }
 
     void startup()
