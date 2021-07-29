@@ -59,7 +59,11 @@ class Home extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
-            option(context,"Take Picture","/picture"),
+            option(context,"Upload Picture","/picture"),
+            Padding(
+              padding: EdgeInsets.only(top: 15),
+            ),
+            option(context,"Choose Gesture","/gesture"),
 
           ]),
         ),

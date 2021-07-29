@@ -167,4 +167,17 @@ class AuthService {
       return null;
     }
   }
+
+  Future setGesture(String input) async {
+    try {
+      final User userA = _auth.currentUser;
+      final uidA = userA.uid;
+
+      await DbService(uid: uidA).updateGesture(input);
+      return userFirebase(userA);
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+  }
 }
