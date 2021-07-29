@@ -4,7 +4,7 @@ import 'package:greeter_robot/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import'package:greeter_robot/models/user.dart';
-import 'package:greeter_robot/screens/home/home.dart';
+import 'package:greeter_robot/screens/home/picture.dart';
 import 'package:greeter_robot/screens/home/basic.dart';
 import 'package:greeter_robot/screens/home/command.dart';
 import 'package:greeter_robot/screens/home/mode.dart';
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<AUser>.value(
+      initialData: null,
       value: AuthService().user,
       child:MaterialApp(
 
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
           '/lefthand': (context) => LeftHand(),
           '/righthand': (context) => RightHand(),
           '/head': (context) => Head(),
+          '/picture': (context) => Picture(),
+
 
 
         },

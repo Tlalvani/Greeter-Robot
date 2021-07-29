@@ -17,7 +17,8 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
   String error="";
-
+  String firstName = "";
+  String lastName = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +41,26 @@ class _RegisterState extends State<Register> {
           key: _formKey,
           child: Column(
             children: <Widget>[
+              SizedBox(height: 20.0),
+              TextFormField(
+                validator:(val)=>val.isEmpty ? 'Enter a first name' : null,
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                ),
+                onChanged: (val) {
+                  setState(() => firstName = val);
+                },
+              ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                validator:(val)=>val.isEmpty ? 'Enter a last name' : null,
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                ),
+                onChanged: (val) {
+                  setState(() => lastName = val);
+                },
+              ),
               SizedBox(height: 20.0),
               TextFormField(
                 validator:(val)=>val.isEmpty ? 'Enter an email' : null,
@@ -70,7 +91,7 @@ class _RegisterState extends State<Register> {
                   ),
                   onPressed: () async {
                     if(_formKey.currentState.validate()){
-                      dynamic result = await _auth.registerAccount(email, password);
+                      dynamic result = await _auth.registerAccount(email, password, firstName, lastName);
                       if(result == null) {
                         setState(() {
                           error = 'Please supply a valid email not already in use';

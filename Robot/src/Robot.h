@@ -40,8 +40,8 @@ private:
     Joint left = Joint(48, 30, 70);
     Joint right = Joint(50, 30, 70);
 
-    Joint headRot = Joint(52, 0, 180);
-    Joint mouth = Joint(53, 0, 10);
+    Joint headRot = Joint(52, 60, 180);
+    Joint mouth = Joint(53, 5, 50);
 
 public:
     Subscriber sub;
@@ -131,6 +131,7 @@ public:
     {
         leftArm.basicMoveArm(true);
         rightArm.basicMoveArm(false);
+        //head.look()
     }
 
     void remoteControl() //Calls Listen and Basic

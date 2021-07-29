@@ -37,6 +37,8 @@ class ModeState extends State<Mode> {
               'Basic',
               'Listen',
               'Parrot',
+              'Encode',
+              'Recognize',
             ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,

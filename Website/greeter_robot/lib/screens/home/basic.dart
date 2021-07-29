@@ -270,36 +270,46 @@ class RightHand extends StatelessWidget {
 }
 
 class Head extends StatelessWidget {
-  List<RefWrapper> moveHead = [RefWrapper('0'), RefWrapper('0'), RefWrapper('0'), RefWrapper('0')];
+  List<RefWrapper> moveHead = [RefWrapper('.5'), RefWrapper('.5'), RefWrapper('.5'), RefWrapper('0')];
   var _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Head"),
         backgroundColor: Colors.blue,
       ),
       body: Center(
-        child: Column(children: <Widget>[
-          Text("TODO"),
-          Padding(
-            padding: EdgeInsets.only(top: 15),
-          ),
-          ElevatedButton(
-            child: Text('Move'),
-            style: ElevatedButton.styleFrom(
-              // background color
-              primary: Colors.blue,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              textStyle: TextStyle(fontSize: 20),
+        child: Form(
+          key: _formKey,
+          child: Column(children: <Widget>[
+            inputField("Vertical", moveHead[0]),
+            inputField("Tilt", moveHead[1]),
+            inputField("Rotate", moveHead[2]),
+            inputField("Jaw", moveHead[3]),
+            Padding(
+              padding: EdgeInsets.only(top: 15),
             ),
-            onPressed: () {
-              AuthService().setNeck(moveHead);
-            },
-          ),
-        ]),
+            ElevatedButton(
+              child: Text('Move'),
+              style: ElevatedButton.styleFrom(
+                // background color
+                primary: Colors.blue,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                textStyle: TextStyle(fontSize: 20),
+              ),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  AuthService().setHead(moveHead);
+                }
+              },
+            ),
+          ]),
+        ),
       ),
     );
+
   }
 }

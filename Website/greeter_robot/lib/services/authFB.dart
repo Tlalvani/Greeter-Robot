@@ -16,6 +16,12 @@ class AuthService {
     return _auth.authStateChanges().map(userFirebase);
   }
 
+  String getUID(){
+    final User userA = _auth.currentUser;
+    final uidA = userA.uid;
+    return uidA;
+  }
+
   Future signInAnon() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
@@ -35,12 +41,12 @@ class AuthService {
     }
   }
 
-  Future registerAccount(String email, String password) async {
+  Future registerAccount(String email, String password, String firstName, String lastName) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
-      //await DbService(uid: user.uid).updateUser("0", "0");
+      await DbService(uid: user.uid).updateUser(firstName, lastName);
       return userFirebase(user);
     } catch (error) {
       print(error.toString());
@@ -112,12 +118,12 @@ class AuthService {
     }
   }
 
-  Future setNeck(List<RefWrapper> input) async {
+  Future setHead(List<RefWrapper> input) async {
     try {
       final User userA = _auth.currentUser;
       final uidA = userA.uid;
 
-      await DbService(uid: uidA).updateNeck(input);
+      await DbService(uid: uidA).updateHead(input);
       return userFirebase(userA);
     } catch (error) {
       print(error.toString());

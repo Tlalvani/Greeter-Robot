@@ -24,6 +24,19 @@ class DbService {
   final CollectionReference Misc =
       FirebaseFirestore.instance.collection('Misc');
 
+  final CollectionReference Users =
+  FirebaseFirestore.instance.collection('Users');
+
+  String getUID(){
+    return uid;
+  }
+  Future updateUser(String firstName, String lastName) async {
+    return await Users.doc(uid).set({
+      'First Name': firstName,
+      'Last Name': lastName,
+    });
+  }
+
   Future updateArm(List<RefWrapper> input, String label) async {
     return await Basic.doc(label).set({
       'bicepExt': input[0].getVal(),
@@ -46,9 +59,12 @@ class DbService {
   }
 
 
-  Future updateNeck(List<RefWrapper> input) async {
-    return await Basic.doc('neck').set({
-      //TODO when neck code gets written
+  Future updateHead(List<RefWrapper> input) async {
+    return await Basic.doc('theHead').set({
+      'Vertical': input[0].getVal(),
+      'Tilt': input[1].getVal(),
+      'Rotate': input[2].getVal(),
+      'Jaw': input[3].getVal(),
     });
   }
 
@@ -61,6 +77,7 @@ class DbService {
   Future updateMode(String input) async {
     return await Misc.doc('Mode').set({
       'Mode': input,
+      'uid': uid,
     });
   }
 }

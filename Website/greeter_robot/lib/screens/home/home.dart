@@ -8,6 +8,21 @@ final AuthService _auth = AuthService();
 
 
 class Home extends StatelessWidget {
+
+  ElevatedButton option(BuildContext context, String label, String path){
+    return ElevatedButton(
+      child: Text(label),
+      style: ElevatedButton.styleFrom(
+        // background color
+        primary: Colors.blue,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        textStyle: TextStyle(fontSize: 20),
+      ),
+      onPressed: () {
+        Navigator.pushNamed(context, path);
+      },
+    );
+}
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,48 +47,20 @@ class Home extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
-            ElevatedButton(
-              child: Text('Select Mode'),
-              style: ElevatedButton.styleFrom(
-                // background color
-                primary: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                textStyle: TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/mode');
-              },
-            ),
+            option(context,"Select Mode","/mode"),
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
-            ElevatedButton(
-              child: Text('Basic Control'),
-              style: ElevatedButton.styleFrom(
-                // background color
-                primary: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                textStyle: TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/basic');
-              },
-            ),
+            option(context,"Basic Control","/basic"),
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
-            ElevatedButton(
-              child: Text('Write Command'),
-              style: ElevatedButton.styleFrom(
-                // background color
-                primary: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                textStyle: TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/command');
-              },
+            option(context,"Write Command","/command"),
+            Padding(
+              padding: EdgeInsets.only(top: 15),
             ),
+            option(context,"Take Picture","/picture"),
+
           ]),
         ),
       ),

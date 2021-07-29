@@ -46,7 +46,7 @@ class Command extends StatelessWidget {
               ),
               ElevatedButton(
 
-                child: Text('Move'),
+                child: Text('Write'),
                 style: ElevatedButton.styleFrom(
                   // background color
                   primary: Colors.blue,
