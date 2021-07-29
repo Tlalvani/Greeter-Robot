@@ -8,6 +8,7 @@ import 'package:greeter_robot/screens/home/picture.dart';
 import 'package:greeter_robot/screens/home/basic.dart';
 import 'package:greeter_robot/screens/home/command.dart';
 import 'package:greeter_robot/screens/home/mode.dart';
+import 'package:greeter_robot/screens/home/gesture.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
           '/righthand': (context) => RightHand(),
           '/head': (context) => Head(),
           '/picture': (context) => Picture(),
+          '/gesture': (context) => Gesture(),
 
 
 

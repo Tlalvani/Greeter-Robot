@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:async';
-import "package:universal_html/html.dart" as html;
-import 'package:firebase/firebase.dart' as fb;
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as Path;
 import 'package:greeter_robot/services/authFB.dart';
 
 class Picture extends StatefulWidget {
@@ -15,6 +12,8 @@ class Picture extends StatefulWidget {
 class _PicState extends State<Picture> {
   FirebaseStorage storage = FirebaseStorage.instance;
   PickedFile fileVar;
+  bool uploaded=false;
+
   // Select and image from the gallery or take a picture with the camera
   // Then upload to Firebase Storage
 
@@ -22,26 +21,25 @@ class _PicState extends State<Picture> {
     fileVar = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );
-
   }
 
   uploadImageToStorage(PickedFile pickedFile) async {
     print(AuthService().getUID());
-      Reference _reference = storage
-          .ref()
-          .child('Images/')
-          .child(AuthService().getUID());
-      await _reference
-          .putData(
-        await pickedFile.readAsBytes(),
-        SettableMetadata(contentType: 'image/jpeg'),
-      )
-          .whenComplete(() async {
-        await _reference.getDownloadURL().then((value) {
-          //uploadedPhotoUrl = value;
-        });
+    Reference _reference =
+        storage.ref().child('Images/').child(AuthService().getUID());
+    await _reference
+        .putData(
+      await pickedFile.readAsBytes(),
+      SettableMetadata(contentType: 'image/jpeg'),
+    )
+        .whenComplete(() async {
+      await _reference.getDownloadURL().then((value) {
+        uploaded = true;
+        print(uploaded);
       });
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +78,7 @@ class _PicState extends State<Picture> {
               ),
               onPressed: () {
                 uploadImageToStorage(fileVar);
+                uploaded = true;
               },
             ),
           ],

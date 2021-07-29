@@ -34,6 +34,7 @@ class DbService {
     return await Users.doc(uid).set({
       'First Name': firstName,
       'Last Name': lastName,
+      'Gesture': "",
     });
   }
 
@@ -71,6 +72,12 @@ class DbService {
   Future updateCommand(String input) async {
     return await Misc.doc('Command').set({
       'Command': input,
+    });
+  }
+
+  Future updateGesture(String input) async {
+    return await Users.doc(uid).update({
+      'Gesture': input,
     });
   }
 
