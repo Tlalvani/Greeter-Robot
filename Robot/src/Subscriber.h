@@ -25,7 +25,7 @@ public:
     ros::Subscriber<std_msgs::String, Subscriber> mode;
     String mode_msg;
 
-    Subscriber() : speaker("/speaker", &speaker_msg), listener("/listener", &Subscriber::listenerCallback, this),
+    Subscriber() : speaker("/speaker", &speaker_msg), listener("/sendCom", &Subscriber::listenerCallback, this),
                    basic("/sendBasicCom", &Subscriber::basicCallback, this), mode("/sendMode", &Subscriber::modeCallback, this), power("/power", &power_msg)
     {
     }

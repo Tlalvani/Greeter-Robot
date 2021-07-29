@@ -18,8 +18,6 @@ def encodeFace(imagePath, name):
         data = {"encodings": [], "names": []}
     knownEncodings = data["encodings"]
     knownNames = data["names"]
-        
-    print(name)
     # load the input image and convert it from BGR (OpenCV ordering)
     # to dlib ordering (RGB)
     image = cv2.imread(imagePath)
