@@ -91,7 +91,7 @@ public:
 
     void startup()
     {
-        if (!started)
+        if (!started) //bool value ensures startup code only runs once
         {
             neck.goToMin();
             leftArm.neutral();
@@ -102,7 +102,6 @@ public:
 
     void listen()
     {
-
         String command = sub.getSpeechCom();
         //sub.nh.loginfo(command.c_str());
         if (command == "hello")
@@ -137,7 +136,7 @@ public:
     void remoteControl() //Calls Listen and Basic
     {
 
-        if (spinTimer.getTimer() > spinTimer.getTime())
+        if (spinTimer.getTimer() > spinTimer.getTime()) //Spin timer used for ros spinOnce
         {
             sub.powerCheck();
             String mode = sub.getMode();

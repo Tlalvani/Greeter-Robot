@@ -25,6 +25,7 @@ public:
     ros::Subscriber<std_msgs::String, Subscriber> mode;
     String mode_msg;
 
+    //Callbacks should get called when ros topics update. Publishers update when .publish is called
     Subscriber() : speaker("/speaker", &speaker_msg), listener("/sendCom", &Subscriber::listenerCallback, this),
                    basic("/sendBasicCom", &Subscriber::basicCallback, this), mode("/sendMode", &Subscriber::modeCallback, this), power("/power", &power_msg)
     {
@@ -45,7 +46,7 @@ public:
         speaker.publish(&speaker_msg);
         //nh.spinOnce(); // this was maybe reason it failed
     }
-    void powerCheck()
+    void powerCheck() //Code used to launch startup files on power flick
     {
         if (analogRead(A15) > 500)
         {
@@ -79,7 +80,7 @@ public:
         basic_msg = outB.data;
         String temp = "";
         int count = 0;
-        for (auto i : basic_msg)
+        for (auto i : basic_msg) //Coverts string to array
         {
             if (i != ',')
             {

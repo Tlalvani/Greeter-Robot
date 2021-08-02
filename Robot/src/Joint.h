@@ -16,21 +16,18 @@ protected:
 public:
     int servoPort = 0;
 
-    Joint()
+    Joint() //Default constructor, effectively null
     {
         servoPort = 98;
         min = 98;
         max = 98;
     }
 
-    Joint(int servoPort, int min, int max)
+    Joint(int servoPort, int min, int max) //Takes servo port min and max
     {
-
         this->servoPort = servoPort;
-
         this->min = min;
         this->max = max;
-        //joint.attach(servoPort);
     }
 
     void begin()
@@ -38,23 +35,12 @@ public:
         joint.attach(servoPort);
     }
 
-    void write(int pos)
+    void write(int pos) //Writes servo position such that it never exceeds min or max
     {
-        if (pos < min)
-        {
-            joint.write(min);
-        }
-        else if (pos > max)
-        {
-            joint.write(max);
-        }
-        else
-        {
-            joint.write(pos);
-        }
+        joint.write(clip(pos, min, max));
     }
 
-    void scale_write(float pos, float scaleMin, float scaleMax) //from 0 to 1
+    void scale_write(float pos, float scaleMin, float scaleMax) //Scales pos between scaleMin and scaleMax. This is normally 0-1
     {
         write(scale(pos, getMin(), getMax(), scaleMin, scaleMax));
     }

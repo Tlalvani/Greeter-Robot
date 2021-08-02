@@ -96,20 +96,20 @@ public:
         thumb.close();
     }
 
-    void moveHand(int t, int i, int m, int r, int p)
+    void moveHand(int t, int i, int m, int r, int p) //Takes five values that are 0-1
     {
-        thumb.scale_write(t,0,1);
-        index.scale_write(i,0,1);
-        middle.scale_write(m,0,1);
-        ring.scale_write(r,0,1);
-        pinky.scale_write(p,0,1);
+        thumb.scale_write(t, 0, 1);
+        index.scale_write(i, 0, 1);
+        middle.scale_write(m, 0, 1);
+        ring.scale_write(r, 0, 1);
+        pinky.scale_write(p, 0, 1);
     }
 
     void basicMoveHand(bool left)
     {
         if (left)
             moveHand(basicArray[8], basicArray[4], basicArray[5], basicArray[7], basicArray[6]);
-        else 
+        else
             moveHand(basicArray[18], basicArray[14], basicArray[1], basicArray[17], basicArray[16]);
     }
 };

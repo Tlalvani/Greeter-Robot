@@ -7,16 +7,19 @@ class Arm
 {
 
 private:
+
 public:
-    Timer holdTimer = Timer(3000);
-    Timer throwTimer = Timer(1000);
-    Timer commTimer = Timer(1000);
     Hand hand;
     Joint wrist;
     Joint bicepExt;
     Joint bicepRot;
     Joint shouldExt;
     Joint shouldRot;
+
+    //Used in throwBall method
+    Timer holdTimer = Timer(3000);
+    Timer throwTimer = Timer(1000);
+    Timer commTimer = Timer(1000);
 
     Arm() {}
     Arm(Hand hand, Joint wrist, Joint bicepExt, Joint bicepRot, Joint shouldExt, Joint shouldRot)
@@ -98,14 +101,14 @@ public:
         shouldRot.goToMin();
     }
 
-    void neutral()
+    void neutral() //Moves arm to neutral position
     {
         hand.goToMin();
         wrist.goToMin();
         moveArm(1, .5, 0, 0);
     }
 
-    void moveArm(float bExten, float bRot, float sExten, float sRot)
+    void moveArm(float bExten, float bRot, float sExten, float sRot) //Takes four values 0-1 to write arm servos
     {
         bicepExt.scale_write(bExten, 0, 1);
         bicepRot.scale_write(bRot, 0, 1);
@@ -113,12 +116,12 @@ public:
         shouldRot.scale_write(sRot, 0, 1);
     }
 
-    void basicMoveArm(bool left)
+    void basicMoveArm(bool left) //Used with basic control, pulls from basicArray which is defined in global
     {
         if (left)
         {
             moveArm(basicArray[0], basicArray[1], basicArray[2], basicArray[3]);
-            wrist.scale_write(basicArray[9],0,1);
+            wrist.scale_write(basicArray[9], 0, 1);
             hand.basicMoveHand(left);
         }
         else
