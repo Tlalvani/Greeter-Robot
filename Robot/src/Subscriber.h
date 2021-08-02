@@ -26,7 +26,7 @@ public:
     String mode_msg;
 
     Subscriber() : speaker("/speaker", &speaker_msg), listener("/sendCom", &Subscriber::listenerCallback, this),
-                   basic("/sendBasicCom", &Subscriber::basicCallback, this), mode("/sendMode", &Subscriber::modeCallback, this), power("/power", &power_msg)
+                   basic("/sendBasicCom", &Subscriber::basicCallback, this),power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this)
     {
     }
     void init()
@@ -47,9 +47,9 @@ public:
     }
     void powerCheck()
     {
-        if (analogRead(A15) > 500)
+        if (analogRead(A15) > 400)
         {
-            nh.loginfo("Power On: " + analogRead(A15));
+            nh.loginfo(("Power On: " + String(analogRead(A15), 10)).c_str());
             power_msg.data = "1";
         }
         else
@@ -73,6 +73,11 @@ public:
         return mode_msg;
     }
 
+    String getBasic()
+    {
+        return basic_msg;
+    }
+
     void basicCallback(const std_msgs::String &outB)
     {
         nh.loginfo("BCall");
@@ -91,7 +96,7 @@ public:
                 basicArray[count] = atof(temp.c_str()); //basicArray are defined in global
 
                 String out = String(basicArray[count], 2);
-                // nh.loginfo(out.c_str());
+                nh.loginfo(out.c_str());
 
                 count++;
                 temp = "";

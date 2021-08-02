@@ -13,7 +13,7 @@ cascPathface = os.path.dirname(
 faceCascade = cv2.CascadeClassifier(cascPathface)
 # load the known faces and embeddings saved in last file
 data = pickle.loads(open('allface_enc', "rb").read())
- 
+print(data)
 
 print("Streaming started")
 video_capture = cv2.VideoCapture(-1)

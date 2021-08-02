@@ -8,11 +8,11 @@ class Robot
 {
 
 private:
-    Timer spinTimer = Timer(1000);
+    Timer spinTimer = Timer(900);
     bool started = false;
     Hand lefthand = Hand(
         Finger(23, 0, 0, 110, 100), //thumb, yellow analog
-        Finger(25, 1, 0, 110, 50),
+        Finger(25, 1, 0, 110, 10),
         Finger(27, 2, 0, 90, 300),
         Finger(29, 3, 0, 90, 100),
         Finger(31, 4, 0, 90, 300) //grey analog
@@ -26,7 +26,7 @@ private:
     Hand righthand = Hand(
         Finger(37, 8, 0, 90, 300), //thumb, yellow analog, black digital, red finger sensor wire
         Finger(39, 9, 0, 90, 30),  //black finger sensor wire
-        Finger(41, 10, 0, 90, 150),
+        Finger(41, 10, 0, 90, 400),
         Finger(43, 11, 0, 90, 300), //grey finger sensor wire
         Finger(45, 12, 0, 90, 10)   //grey analog, orange finger sensor wire
     );
@@ -93,7 +93,7 @@ public:
     {
         if (!started)
         {
-            neck.goToMin();
+            head.neutral();
             leftArm.neutral();
             rightArm.neutral();
             started = true;
@@ -129,9 +129,10 @@ public:
     }
     void basic()
     {
+        // sub.nh.loginfo(sub.getBasic().c_str());
         leftArm.basicMoveArm(true);
         rightArm.basicMoveArm(false);
-        //head.look()
+        head.basicLook();
     }
 
     void remoteControl() //Calls Listen and Basic
@@ -141,12 +142,16 @@ public:
         {
             sub.powerCheck();
             String mode = sub.getMode();
-            if (mode == "Listen")
+            String basics = sub.getBasic();
+            if (mode == "Listen" || mode == "Command")
             {
                 listen();
             }
             else if (mode == "Basic")
+            {
                 basic();
+            }
+
             sub.nh.spinOnce();
             spinTimer.resetTimer();
         }

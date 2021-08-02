@@ -63,20 +63,22 @@ public:
             if (holdTimer.getTimer() > holdTimer.getTime())
             {
 
-                if (comm == "throw")
+                if (comm == "drop")
                 {
                     moveArm(.3, .75, 0, .45);
+                    wrist.goToMax();
                     if (throwTimer.getTimer() > throwTimer.getTime())
                     {
                         hand.fixed(0);
                         thrown = true;
-                        sub.nh.loginfo("Thrown");
+                        sub.nh.loginfo("Dropped");
                     }
                 }
                 else //this runs first but only once since after the timer is done it will just run the if
                 {
                     hand.close();
                     throwTimer.resetTimer();
+
                     sub.nh.loginfo("Holding");
                 }
             }
@@ -118,7 +120,7 @@ public:
         if (left)
         {
             moveArm(basicArray[0], basicArray[1], basicArray[2], basicArray[3]);
-            wrist.scale_write(basicArray[9],0,1);
+            wrist.scale_write(basicArray[9], 0, 1);
             hand.basicMoveHand(left);
         }
         else

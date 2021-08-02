@@ -18,7 +18,7 @@ def callback(data):
         print("FALSE")
     elif data.data =='1' and not state:
         pid1 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/subscriber.py"])
-        pid2 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/speaker.py"])
+        pid2 = subprocess.Popen([sys.executable, "/home/george/Github/GreeterRobot/Scripts/publisher.py"])
         state = True
         print("TRUE")
                 

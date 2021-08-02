@@ -82,12 +82,16 @@ def publishCommands(string):
 
     string = string.replace("Hi-5", 'high five')
     string = string.replace("-", ' ')
-    print(string)
-    diction = ['hello',"handshake", 'high five' , 'bye','hold','throw']
+    if string != '':
+        print(string)
+    diction = ['hello',"handshake", 'high five' , 'bye','hold','drop', 'recognize']
 
     for i in range(len(diction)):
         if diction[i] in string:
+            
             pubCommand.publish(diction[i])
+            if diction[i] =="recognize":
+                changeMode("Recognize")
             time.sleep(1.1)
             break
 
@@ -99,6 +103,9 @@ def changeMode(string):
 def getCommand():
     command_val = db.collection(u'Misc').document(u'Command').get().to_dict()["Command"]
     publishCommands(command_val)
+    rate.sleep()
+    db.collection(u'Misc').document(u'Command').set({u'Command':''}, merge= True)
+    pubCommand.publish('')
 
 
 def basic():
@@ -106,14 +113,13 @@ def basic():
     basic_list = [] 
     for doc in basic_ref.stream():
         temp_key =[]
-        temp_val = []
         for key,value in doc.to_dict().items():
             temp_key.append(key)
         temp_key.sort() 
-        print(temp_key)
         for i in range(len(temp_key)):
             basic_list.append(doc.to_dict()[temp_key[i]])
-    pubBasic.publish(",".join(basic_list))
+    pubBasic.publish(",".join(basic_list)+ ',')
+    rate.sleep()
 
 def mode():
     mode_val = db.collection(u'Misc').document(u'Mode').get().to_dict()["Mode"]
@@ -155,7 +161,7 @@ def recognize():
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
             rgb_small_frame = small_frame[:, :, ::-1]
             #faces = faceCascade.detectMultiScale(gray, scaleFactor=1.1,minNeighbors=5,minSize=(60, 60),flags=cv2.CASCADE_SCALE_IMAGE)
-            if count %20 ==0:
+            if count %5 ==0:
                 print("Processing frame " + str(count))
             if process_this_frame:
                 # Find all the faces and face encodings in the current frame of video
@@ -176,12 +182,14 @@ def recognize():
                             name = data["names"][i]
                             print(name)
                             uid = db.collection(u'Misc').document(u'Mode').get().to_dict()['uid']
-                            gesture = db.collection(u'Users').document(uid).get().to_dict()['Gesture']
-                            if gesture != '':
-                                print("No Gesture")
-                                pubCommand.publish(publishCommands(gesture))
+                            # gesture = db.collection(u'Users').document(uid).get().to_dict()['Gesture']
+                            # if gesture != '':
+                            #     pubCommand.publish(publishCommands(gesture))
+                            # else:
+                            #     print("No Gesture")
                             pubTalk.publish("Hi " + name)
-                            changeMode("Listen")
+                            # rate.sleep()
+                            changeMode("Command")
                             
                             stop = True
 
@@ -208,12 +216,13 @@ def recognize():
 if __name__ == '__main__':
     try:
         print('Publisher started')
-        count = 0
+        prev_mode =''
         while not rospy.is_shutdown():
             try:
                 mode_out = mode()
-                if count %20 == 0:
-                    print(mode_out)
+                if prev_mode != '' and prev_mode != mode_out:
+                    print("Mode switched to "+ mode_out)
+                prev_mode = mode_out
                 if mode_out == "Listen":
                     listener()
                 elif mode_out == "Basic":
@@ -224,7 +233,6 @@ if __name__ == '__main__':
                     recognize()
                 elif mode_out == "Command":
                     getCommand()
-                count +=1
             except KeyboardInterrupt:
                 print("Caught one")
                 mode_out = mode()
