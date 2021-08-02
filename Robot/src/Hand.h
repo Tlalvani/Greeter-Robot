@@ -96,7 +96,7 @@ public:
         thumb.close();
     }
 
-    void moveHand(int t, int i, int m, int r, int p)
+    void moveHand(int t, int i, int m, int r, int p) //Takes five values that are 0-1
     {
         thumb.scale_write(t, 0, 1);
         index.scale_write(i, 0, 1);

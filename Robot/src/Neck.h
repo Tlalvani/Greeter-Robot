@@ -40,10 +40,10 @@ public:
         right.goToMax();
     }
 
-    void look(float vertical, float tilt)
+    void look(float vertical, float tilt) //Takes two values that are 0-1
     {
         front.scale_write(vertical, 0, 1);
-        left.scale_write(tilt, 0, 1);
+        left.scale_write(tilt, 0, 1); //Left and Right are scaled opposite so they move in sync
         right.scale_write(tilt, 1, 0);
     }
 };

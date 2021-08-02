@@ -34,7 +34,7 @@ public:
 
     void close()
     {
-        Serial.println(sensorRead()); // not sure why it hecks it up without these
+        Serial.println(sensorRead()); // not sure why it hecks it up without the print statements
 
         if (closeTimer.getTimer() > closeTimer.getTime())
         {
