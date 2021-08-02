@@ -40,17 +40,13 @@ public:
         mouth.goToMax();
     }
 
-<<<<<<< HEAD
     void neutral()
     {
         look(.5, .5, .5);
         mouth.goToMin();
     }
 
-    void look(float vertical, float tilt, float rotate)
-=======
     void look(float vertical, float tilt, float rotate) //Takes three values 0-1
->>>>>>> b3b92c916e007a8f9ce11e1ee879a9d69502d5d5
     {
         neck.look(vertical, tilt);
         headRot.scale_write(rotate, 0, 1);
