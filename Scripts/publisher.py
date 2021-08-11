@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import firebase 
-import speaker
 import speechRecognition
 import faceRecognition
 import helper
-import ros
+import rosPublisher
 
 import rospy
 

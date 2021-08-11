@@ -29,7 +29,7 @@ class SpeechRecognition():
                     else:  # this version of Python uses unicode for strings (Python 3+)
                         out = ("{}".format(value))
                     
-                    helper.extractKeywords(out)
+                    return out                
                 except sr.UnknownValueError:
                     print("Oops! Didn't catch that")
                 except sr.RequestError as e:

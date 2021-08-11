@@ -58,6 +58,7 @@ class FaceRecognition():
         process_this_frame = True
         mode_out = self.fb.mode()
         count = 0
+        out =''
         while (mode_out == "Recognize"):
             try:
                 # grab the frame from the threaded video stream

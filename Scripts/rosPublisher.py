@@ -25,9 +25,9 @@ class RosPublisher():
             fb.changeMode("Recognize")
         else:
             self.pubCommand.publish(command_val)
-        time.sleep(1.1)
+        time.sleep(1) # so that arduino doesnt subscribe to the topic twice
         self.rate.sleep()
-        self.pubCommand.publish('')
+        self.pubCommand.publish('') # resets topic
     
     def publishTalk(self, talk_val):
         self.pubTalk.publish(talk_val)
