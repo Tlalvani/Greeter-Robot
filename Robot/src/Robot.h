@@ -126,9 +126,9 @@ public:
             rightArm.throwBall(sub);
         }
     }
+
     void basic()
     {
-        // sub.nh.loginfo(sub.getBasic().c_str());
         leftArm.basicMoveArm(true);
         rightArm.basicMoveArm(false);
         head.basicLook();
