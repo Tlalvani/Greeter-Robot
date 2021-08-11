@@ -1,8 +1,12 @@
 # Python and Shell Scripts
 
 ## Linux Scripts
+**This code runs on boot by hitting alt+f2 and clicking gnome-session-properties**
 - bootcode.sh runs necessary ros commands and runs bootcode.py
+  - gnome-terminal -- bash -c "/home/george/Github/GreeterRobot/Scripts/bootcode.sh; exec bash"
 - swapfile.sh creates a swapfile on our usbdrive
+  -  https://github.com/JetsonHacksNano/installSwapfile
+  -  gnome-terminal -- bash -c "/home/george/Github/GreeterRobot/Scripts/swapfile.sh; exec bash"
 ## Python Scripts
 There are a combo of executable python scripts which utilize python classes
 ### Executable Scripts
