@@ -79,30 +79,66 @@ public:
         return basic_msg;
     }
 
+    void parsePair(String str) //Parses string of form 0,0
+    {
+        String substr;
+        int index = 0;
+        bool x = true;
+        int indexVal;
+        double valueVal;
+        while (index != str.length())
+        {
+
+            if (str[index] != ',')
+            {
+                substr += str[index];
+            }
+            else if (x)
+            {
+
+                indexVal = substr.toInt();
+                substr = "";
+                x = false;
+            }
+            else
+            {
+                valueVal = substr.toDouble();
+                substr = "";
+            }
+            index++;
+        }
+        basicArray[(indexVal)] = valueVal;
+    }
+
+    void parseString(String str) //Parses string from basic topic
+    {
+
+        int index = 0;
+        String substr;
+        while (index != str.length())
+        {
+            if (str[index] != ';')
+            {
+                substr += str[index];
+                index++;
+            }
+            else
+            {
+                //cout << substr << endl;
+                index++;
+                parsePair(substr);
+                substr = "";
+            }
+        }
+    }
+
     void basicCallback(const std_msgs::String &outB)
     {
         nh.loginfo("BCall");
         basic_msg = outB.data;
-        // String temp = "";
-        // int count = 0;
-        // for (auto i : basic_msg) //Coverts string to array
-        // {
-        //     if (i != ',')
-        //     {
-        //         temp += i;
-        //     }
-        //     else
-        //     {
-
-        //         basicArray[count] = atof(temp.c_str()); //basicArray are defined in global
-
-        //         String out = String(basicArray[count], 2);
-        //         nh.loginfo(out.c_str());
-
-        //         count++;
-        //         temp = "";
-        //     }
-        // }
+        String temp = "";
+        int count = 0;
+        parseString(basic_msg);
     }
 
     void modeCallback(const std_msgs::String &outM)
