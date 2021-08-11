@@ -27,7 +27,7 @@ public:
 
     //Callbacks should get called when ros topics update. Publishers update when .publish is called
     Subscriber() : speaker("/speaker", &speaker_msg), listener("/sendCom", &Subscriber::listenerCallback, this),
-                   basic("/sendBasicCom", &Subscriber::basicCallback, this),power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this)
+                   basic("/sendBasicCom", &Subscriber::basicCallback, this), power("/power", &power_msg), mode("/sendMode", &Subscriber::modeCallback, this)
     {
     }
     void init()
@@ -83,26 +83,26 @@ public:
     {
         nh.loginfo("BCall");
         basic_msg = outB.data;
-        String temp = "";
-        int count = 0;
-        for (auto i : basic_msg) //Coverts string to array
-        {
-            if (i != ',')
-            {
-                temp += i;
-            }
-            else
-            {
+        // String temp = "";
+        // int count = 0;
+        // for (auto i : basic_msg) //Coverts string to array
+        // {
+        //     if (i != ',')
+        //     {
+        //         temp += i;
+        //     }
+        //     else
+        //     {
 
-                basicArray[count] = atof(temp.c_str()); //basicArray are defined in global
+        //         basicArray[count] = atof(temp.c_str()); //basicArray are defined in global
 
-                String out = String(basicArray[count], 2);
-                nh.loginfo(out.c_str());
+        //         String out = String(basicArray[count], 2);
+        //         nh.loginfo(out.c_str());
 
-                count++;
-                temp = "";
-            }
-        }
+        //         count++;
+        //         temp = "";
+        //     }
+        // }
     }
 
     void modeCallback(const std_msgs::String &outM)

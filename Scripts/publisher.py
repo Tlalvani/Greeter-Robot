@@ -43,7 +43,7 @@ faceCascade = cv2.CascadeClassifier(cascPathface)
     # load the known faces and embeddings saved in encoded dictionary file
 data = pickle.loads(open('allface_enc', "rb").read())
  
-
+oldBasic = []
 
 
 def listener():
@@ -109,8 +109,10 @@ def getCommand():
 
 
 def basic():
+    global oldBasic
     basic_ref = db.collection(u'Basic')
     basic_list = [] 
+    basic_string = ""
     for doc in basic_ref.stream():
         temp_key =[]
         for key,value in doc.to_dict().items():
@@ -118,7 +120,18 @@ def basic():
         temp_key.sort() 
         for i in range(len(temp_key)):
             basic_list.append(doc.to_dict()[temp_key[i]])
-    pubBasic.publish(",".join(basic_list)+ ',')
+    if len(oldBasic) ==0:
+        oldBasic =basic_list
+    else:
+        for i in range(len(basic_list)):
+            if basic_list[i] != oldBasic[i]:
+                basic_string +=  str(i) + ',' + basic_list[i] + ';'
+    oldBasic = basic_list
+
+
+    #pubBasic.publish(",".join(basic_list)+ ',')
+    if basic_string != '':
+        pubBasic.publish(basic_string)
     rate.sleep()
 
 def mode():
