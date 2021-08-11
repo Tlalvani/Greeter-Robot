@@ -35,20 +35,22 @@ public:
         nh.getHardware()->setBaud(57600);
         nh.initNode();
         nh.advertise(speaker);
+        nh.advertise(power);
         nh.subscribe(listener);
         nh.subscribe(mode);
         nh.subscribe(basic);
-        nh.advertise(power);
     }
-    void speak(String command)
+
+    void speak(String command) //publisher method
     {
         speaker_msg.data = command.c_str();
         speaker.publish(&speaker_msg);
-        //nh.spinOnce(); // this was maybe reason it failed
     }
-    void powerCheck() //Code used to launch startup files on power flick
+
+    void powerCheck() //publisher method used to launch startup files on power flick
     {
-        if (analogRead(A15) > 400)
+        int analogthresh = 400;
+        if (analogRead(A15) > analogthresh)
         {
             nh.loginfo(("Power On: " + String(analogRead(A15), 10)).c_str());
             power_msg.data = "1";
@@ -56,30 +58,45 @@ public:
         else
             power_msg.data = "0";
         power.publish(&power_msg);
-        //nh.spinOnce(); // this was maybe reason it failed
     }
-    void listenerCallback(const std_msgs::String &outL)
+
+    void listenerCallback(const std_msgs::String &outL) //subscriber callback that stores Listen data in the listener_msg
     {
         nh.loginfo("LCall");
         listener_msg = outL.data;
     }
 
-    String getSpeechCom()
+    String getSpeechCom() //retrieves data
     {
         return listener_msg;
     }
 
-    String getMode()
+    void modeCallback(const std_msgs::String &outM) //subscriber callback that stores Mode data in the mode_msg
+    {
+        nh.loginfo("MCall");
+        mode_msg = outM.data;
+    }
+
+    String getMode() //retrieves data
     {
         return mode_msg;
     }
 
-    String getBasic()
+    void basicCallback(const std_msgs::String &outB) //subscriber callback that stores Basic data in the basic_msg
+    {
+        nh.loginfo("BCall");
+        basic_msg = outB.data;
+        String temp = "";
+        int count = 0;
+        parseString(basic_msg); //calls parseString method to update the global array containing the basic data points
+    }
+
+    String getBasic() //retrieves data
     {
         return basic_msg;
     }
 
-    void parsePair(String str) //Parses string of form 0,0
+    void parsePair(String str) //Parses string of form 0,0 //called by parseString
     {
         String substr;
         int index = 0;
@@ -130,21 +147,6 @@ public:
                 substr = "";
             }
         }
-    }
-
-    void basicCallback(const std_msgs::String &outB)
-    {
-        nh.loginfo("BCall");
-        basic_msg = outB.data;
-        String temp = "";
-        int count = 0;
-        parseString(basic_msg);
-    }
-
-    void modeCallback(const std_msgs::String &outM)
-    {
-        nh.loginfo("MCall");
-        mode_msg = outM.data;
     }
 };
 #endif
