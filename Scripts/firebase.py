@@ -17,7 +17,7 @@ class Firebase():
     db = firestore.Client()
     prev_mode =''
     old_basic_list =[]
-
+    
     """
     Takes the mode from firebase and prints to terminal if it changed
     """
@@ -63,23 +63,30 @@ class Firebase():
         mode_ref.set({u'Mode':string},merge=True)
 
     def downloadImage(self): # downloads the current users image and then returns the fullname
-        client = storage.Client()
-        bucket = client.bucket("greeterrobot.appspot.com")
+        
         # Get name from firebase
         uid = self.getUidFromMode()
         fname = self.db.collection(u'Users').document(uid).get().to_dict()['First Name']
         lname = self.db.collection(u'Users').document(uid).get().to_dict()['Last Name']
         fullname = fname+' ' + lname
-        blob = bucket.blob("Images/"+uid)
-        url = blob.generate_signed_url(datetime.timedelta(seconds=300), method='GET')
-        self.imagepath = self.folderpath +"AllImages/"+uid+".jpg"
-        with open(self.imagepath, "wb") as file_obj:
+        imagepath, url = self.getImagePath()
+        with open(imagepath, "wb") as file_obj:
             file_obj.write(requests.get(url).content)
             file_obj.close()
         return fullname
 
     def deleteImage(self):
-        os.remove(self.filepath)
+        filepath, _ = self.getImagePath()
+        os.remove(filepath)
     
     def getUidFromMode(self):
         return self.db.collection(u'Misc').document(u'Mode').get().to_dict()['uid']
+    
+    def getImagePath(self):
+        uid = self.getUidFromMode()
+        client = storage.Client()
+        bucket = client.bucket("greeterrobot.appspot.com")
+        blob = bucket.blob("Images/"+uid)
+        url = blob.generate_signed_url(datetime.timedelta(seconds=300), method='GET')
+        imagepath = self.folderpath +"AllImages/"+uid+".jpg"
+        return (imagepath, url)

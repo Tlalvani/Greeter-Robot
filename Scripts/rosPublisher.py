@@ -11,6 +11,9 @@ class RosPublisher():
     rospy.init_node('publisher', anonymous=True)
     rate = rospy.Rate(1) # 1hz
 
+    def __init__(self, fb):
+        self.fb = fb
+
     def publishBasic(self, basic_val):
         if basic_val != '':
             self.pubBasic.publish(basic_val)
@@ -20,9 +23,9 @@ class RosPublisher():
         self.pubMode.publish(mode_val)
         self.rate.sleep()
     
-    def publishCommand(self, command_val, fb):
+    def publishCommand(self, command_val):
         if command_val == "recognize":
-            fb.changeMode("Recognize")
+            self.fb.changeMode("Recognize")
         else:
             self.pubCommand.publish(command_val)
         time.sleep(1) # so that arduino doesnt subscribe to the topic twice

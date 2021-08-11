@@ -14,22 +14,29 @@ class FaceRecognition():
         # load the harcaascade in the cascade classifier
     faceCascade = cv2.CascadeClassifier(cascPathface)
         # load the known faces and embeddings saved in encoded dictionary file
-    data = pickle.loads(open('allface_enc', "rb").read())
+    try:
+        data = pickle.loads(open('allface_enc', "rb").read())
+    except FileNotFoundError:
+        print("Making new encoding")
+        data = {"encodings": [], "names": []}
 
     def __init__(self, fb):
         self.fb = fb
 
     def encodeImage(self):
+        print("Encoding")
         name = self.fb.downloadImage()
+        print(name)
         try:
-            data = pickle.loads(open('allface_enc', "rb").read())
+            self.data = pickle.loads(open('allface_enc', "rb").read())
         except FileNotFoundError:
             print("Making new encoding")
-            data = {"encodings": [], "names": []}
-        knownEncodings = data["encodings"]
-        knownNames = data["names"]
+            self.data = {"encodings": [], "names": []}
+        knownEncodings = self.data["encodings"]
+        knownNames = self.data["names"]
         # load the input image and convert it from BGR (OpenCV ordering) to dlib ordering (RGB)
-        image = cv2.imread(self.fb.imagePath)
+        imagepath, _ = self.fb.getImagePath()
+        image = cv2.imread(imagepath)
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # Use Face_recognition to locate faces
         boxes = face_recognition.face_locations(rgb,model='hog')
@@ -41,10 +48,10 @@ class FaceRecognition():
             knownNames.append(name)
         
         # save encodings along with their names in dictionary data
-        data = {"encodings": knownEncodings, "names": knownNames}
+        self.data = {"encodings": knownEncodings, "names": knownNames}
         # use pickle to save data into a file for later use
         f = open("allface_enc", "wb")
-        f.write(pickle.dumps(data))
+        f.write(pickle.dumps(self.data))
         f.close()
         print("Encoded")
         self.fb.deleteImage()
@@ -54,6 +61,8 @@ class FaceRecognition():
 
     def recognize(self):
         print("Streaming started")
+        self.data = pickle.loads(open('allface_enc', "rb").read())
+        print("Names: ",self.data['names'])
         self.video_capture = cv2.VideoCapture(-1)
         process_this_frame = True
         mode_out = self.fb.mode()
@@ -101,7 +110,7 @@ class FaceRecognition():
         self.closeOpenCv()
         print("Camera closed by switching modes")
         return out
-        
+         
     def closeOpenCv(self): #void function to close the camera so that you dont have to unplug it after stopping terminal
 
         self.video_capture.release()
